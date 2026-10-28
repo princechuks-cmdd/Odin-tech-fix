@@ -1,0 +1,1183 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<meta name="description" content="Odin TechFix provides practical, safety-first troubleshooting for computers, phones, consoles, games and everyday technology.">
+<title>Odin TechFix — Troubleshoot Any Tech</title>
+
+<style>
+:root {
+  --bg:#0b1120;--panel:#121c2e;--panel2:#17243a;
+  --line:#2a3a53;--text:#edf4ff;--muted:#9eb0c9;
+  --accent:#63e6be;--blue:#77a7ff;--warn:#ffd166;
+  --danger:#ff7b87;--shadow:0 18px 50px #0003;
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{
+  margin:0;background:radial-gradient(ellipse at top right,#142c48 0,transparent 38%),var(--bg);
+  color:var(--text);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif
+}
+body,button,input,select,textarea{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+button,a{touch-action:manipulation}
+button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible,select:focus-visible{
+  outline:3px solid var(--blue);outline-offset:3px
+}
+a{color:var(--accent)}
+button{cursor:pointer}
+.shell{width:min(1160px,calc(100% - 32px));margin:auto}
+.hidden{display:none!important}
+
+/* Navigation */
+.topbar{
+  position:sticky;top:0;z-index:20;background:#0b1120ef;
+  backdrop-filter:blur(14px);border-bottom:1px solid #26364c
+}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:74px}
+.brand{display:flex;align-items:center;gap:11px;color:var(--text);text-decoration:none;font-weight:850}
+.brandmark{
+  display:grid;place-items:center;width:42px;height:42px;border-radius:13px;
+  background:linear-gradient(135deg,var(--accent),#68b5ff);color:#07111e;font-size:22px
+}
+.brand small{display:block;color:var(--muted);font-size:11px;letter-spacing:1.8px;text-transform:uppercase}
+.navlinks{display:flex;align-items:center;gap:18px}
+.navlinks a{color:var(--muted);text-decoration:none;font-size:13px}
+.navlinks a:hover{color:var(--accent)}
+.menu-toggle,.theme-toggle{
+  background:var(--panel);color:var(--text);border:1px solid var(--line);
+  border-radius:10px;padding:9px 12px;font-weight:750
+}
+.menu-toggle{display:none}
+.theme-toggle{white-space:nowrap}
+
+/* Hero */
+.hero{padding:58px 0 34px}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center}
+.eyebrow{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase}
+h1{font-size:clamp(2.5rem,5vw,4.7rem);line-height:1.04;letter-spacing:-2px;margin:17px 0 20px}
+h1 span{color:var(--accent)}
+p{color:var(--muted)}
+.hero p{font-size:18px;max-width:650px}
+.actions,.form-actions,.result-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.btn{
+  display:inline-flex;justify-content:center;align-items:center;gap:8px;
+  border:1px solid transparent;border-radius:12px;padding:12px 17px;
+  font-weight:800;text-decoration:none;transition:transform .2s,box-shadow .2s
+}
+.btn:hover{transform:translateY(-2px)}
+.primary{background:var(--accent);color:#07151a}
+.secondary{background:var(--panel2);color:var(--text);border-color:var(--line)}
+.hero-card,.panel{
+  background:linear-gradient(145deg,#182840,#101827);
+  border:1px solid #2b405c;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)
+}
+.statusline{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px;text-transform:uppercase}
+.pulse{display:inline-block;width:9px;height:9px;background:var(--accent);border-radius:50%;box-shadow:0 0 0 5px #63e6be20;animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 10px #63e6be08}}
+.device-orbit{min-height:230px;display:grid;place-items:center;position:relative;isolation:isolate}
+.orbit{
+  width:170px;height:170px;border:1px dashed #5b789c;border-radius:50%;
+  display:grid;place-items:center;animation:spin 24s linear infinite;position:relative
+}
+.orbit:before,.orbit:after{
+  content:"";position:absolute;width:12px;height:12px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 20px var(--accent)
+}
+.orbit:before{top:12px;left:24px}
+.orbit:after{bottom:20px;right:9px;background:var(--blue);box-shadow:0 0 20px var(--blue)}
+.chip{
+  width:115px;height:90px;border-radius:17px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#203c59,#102033);border:1px solid #47617f;
+  font-size:55px;animation:floatLaptop 4s ease-in-out infinite;
+  box-shadow:0 0 30px #63e6be20
+}
+.chip:after{
+  content:"";position:absolute;width:135px;height:5px;margin-top:103px;
+  border-radius:50%;background:linear-gradient(90deg,transparent,var(--accent),var(--blue),transparent);
+  filter:blur(5px);animation:lightSweep 3s ease-in-out infinite
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes floatLaptop{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-13px) rotate(2deg)}}
+@keyframes lightSweep{0%,100%{opacity:.35;transform:scaleX(.7)}50%{opacity:1;transform:scaleX(1.2)}}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{padding:12px;background:#0b1424;border:1px solid #26364c;border-radius:13px}
+.stat strong{display:block}.stat span{color:var(--muted);font-size:12px}
+
+/* Sections */
+section.page-section{padding:35px 0}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:20px}
+.section-head h2{font-size:clamp(1.6rem,3vw,2.4rem);margin:5px 0}
+.section-head p{margin:0;max-width:570px}
+.tool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.tool-card,.faq{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:17px}
+.tool-icon{font-size:25px}
+.tool-card h3{margin:10px 0 5px;font-size:16px}
+.tool-card p,.faq p{margin:0;font-size:13px}
+
+/* Diagnosis */
+.diagnostic-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.panel h2,.panel h3{margin-top:0}
+.panel-intro{margin-top:-5px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.field.full{grid-column:1/-1}
+label{font-size:13px;font-weight:750;color:#dbe7f8}
+input,select,textarea{
+  width:100%;background:#0b1424;border:1px solid #34465f;color:var(--text);
+  border-radius:11px;padding:12px 13px;min-width:0;font-size:14px
+}
+select option{background:#101827}
+textarea{resize:vertical;min-height:90px}
+.hint{color:var(--muted);font-size:12px}
+.checkline{display:flex;gap:10px;color:var(--muted);font-size:13px}
+.checkline input{width:auto;margin-top:5px}
+.diagnosis-form-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:16px}
+.diagnosis-form-heading h2{margin-bottom:5px}
+.chat-near-diagnosis{flex-shrink:0;white-space:nowrap}
+.results{min-height:220px}
+.empty-state{display:grid;place-items:center;text-align:center;min-height:190px}
+.empty-icon{font-size:40px}
+.notice{padding:12px 14px;border-radius:12px;margin:12px 0;font-size:13px;border:1px solid}
+.notice.info{background:#172b42;border-color:#2f5277;color:#d5e7ff}
+.notice.warn{background:#392f1a;border-color:#705c2b;color:#ffe8a3}
+.notice.danger{background:#3b202a;border-color:#78404d;color:#ffdce0}
+.steps{padding-left:22px}.steps li{padding:0 0 9px 4px}
+.steps li::marker{color:var(--accent);font-weight:900}
+.small-btn{
+  border:1px solid var(--line);background:#0c1627;color:var(--text);
+  border-radius:10px;padding:9px 12px;font-weight:700;font-size:13px
+}
+.search-list{display:grid;gap:8px;margin-top:10px}
+.search-link{display:block;text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--text);background:#0c1627;font-size:13px}
+.search-link span{display:block;color:var(--muted);font-size:11px}
+.followup-box{margin-top:18px;padding:14px;border:1px solid #3a6b65;border-radius:13px;background:#102b2c}
+.followup-box label{display:block;margin-bottom:8px}
+.followup-box select{margin-bottom:10px}
+.report-meta{font-size:12px;color:var(--muted)}
+.history-list{display:grid;gap:10px;margin-top:16px}
+.history-item{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px;border:1px solid var(--line);border-radius:12px;background:#0c1627}
+.history-item strong{display:block}
+.history-item small{display:block;color:var(--muted);margin-top:3px}
+.history-actions{display:flex;flex-wrap:wrap;gap:7px}
+
+/* ==========================================
+   ODIN POPUP — CHAT IS NOT A HOME PAGE SECTION
+   ========================================== */
+#chat{display:none!important}
+#chat.odin-modal-open{
+  display:flex!important;position:fixed;inset:0;z-index:1000;
+  width:100%;height:100vh;height:100dvh;padding:24px;margin:0;
+  align-items:center;justify-content:center;overflow-y:auto;
+  background:#030812c9;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  animation:overlayIn .22s ease-out
+}
+#chat.odin-modal-open>.shell{width:min(760px,100%);max-width:760px;margin:auto;padding:0}
+#chat .section-head{display:none!important}
+#chat .chat-panel{
+  width:100%;max-width:760px;max-height:calc(100dvh - 48px);
+  display:flex;flex-direction:column;overflow:hidden;
+  padding:0;background:var(--panel);border:1px solid #63e6be70;
+  border-radius:22px;box-shadow:0 25px 100px #0009,0 0 45px #63e6be12;
+  animation:popupIn .3s cubic-bezier(.2,.8,.2,1)
+}
+#chat .chat-head{
+  flex-shrink:0;min-height:76px;padding:16px 20px;
+  background:linear-gradient(110deg,#172b42,#101827);
+  border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px
+}
+#chat .chat-head h3{margin:0;font-size:17px}
+.odin-chat-controls{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-left:auto}
+.odin-chat-control{
+  display:inline-flex;align-items:center;justify-content:center;min-height:38px;
+  padding:8px 12px;border:1px solid var(--line);border-radius:10px;
+  background:#0b1424;color:var(--text);font-size:12px;font-weight:800
+}
+.odin-chat-close{width:40px;padding:0;font-size:24px}
+#chat .chat-log{
+  flex:1 1 auto;min-height:180px;height:auto;max-height:55dvh;overflow:auto;
+  padding:20px;display:flex;flex-direction:column;gap:12px;overscroll-behavior:contain
+}
+.bubble{max-width:92%;padding:12px 14px;border-radius:14px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}
+.bubble.bot{align-self:flex-start;background:#17243a;border:1px solid #2a3a53}
+.bubble.user{align-self:flex-end;background:#1c4b45;border:1px solid #287568;color:#f1fffb}
+.bubble small{display:block;margin-top:7px;color:var(--muted);font-size:11px}
+.mode{font-size:11px;border:1px solid #2d735e;color:var(--accent);border-radius:99px;padding:5px 9px;white-space:nowrap}
+#chat #chatForm{flex-shrink:0;border-top:1px solid var(--line)}
+#chat .chat-compose{padding:14px;display:grid;grid-template-columns:1fr auto;gap:9px;align-items:end}
+#chat .chat-compose textarea{min-height:48px;max-height:130px;resize:vertical}
+#chat .chat-note{flex-shrink:0;padding:0 16px 14px;font-size:11px;color:var(--muted)}
+body.odin-chat-open{overflow:hidden}
+@keyframes overlayIn{from{opacity:0}to{opacity:1}}
+@keyframes popupIn{from{opacity:0;transform:translateY(22px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* Floating chat launcher */
+.floating-odin{
+  position:fixed;right:22px;bottom:22px;z-index:999;
+  display:flex;align-items:center;gap:10px;border:1px solid #8bf1d4;
+  background:linear-gradient(135deg,#63e6be,#75b9ff);color:#07151a;
+  border-radius:999px;padding:13px 18px;font-weight:850;
+  box-shadow:0 12px 35px #0007;transition:transform .18s,box-shadow .18s
+}
+.floating-odin:hover{transform:translateY(-3px);box-shadow:0 16px 42px #0009}
+.float-icon{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#07151a;color:#63e6be;font-size:17px}
+.float-copy{display:flex;flex-direction:column;line-height:1.2;text-align:left;white-space:nowrap}
+.float-copy small{font-size:10px;font-weight:650;opacity:.78;margin-top:3px}
+
+/* Toast and footer */
+.toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:1200;
+  background:#eafbf5;color:#09211b;padding:11px 16px;border-radius:12px;
+  font-weight:750;box-shadow:var(--shadow);max-width:90vw
+}
+.footer{border-top:1px solid var(--line);margin-top:30px;padding:25px 0 35px;color:var(--muted);font-size:13px}
+.footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+/* Light mode */
+html[data-theme="light"]{
+  color-scheme:light;--bg:#f4f7fb;--panel:#fff;--panel2:#eaf0f8;
+  --line:#d5deea;--text:#172337;--muted:#596a82;
+  --accent:#087f68;--blue:#245fd6;--warn:#8a5b00;--danger:#b42336;
+  --shadow:0 14px 38px #23344b16
+}
+html[data-theme="light"] body{background:radial-gradient(ellipse at top right,#dcecff 0,transparent 42%),var(--bg);color:var(--text)}
+html[data-theme="light"] .topbar{background:#f7faffed;border-color:var(--line)}
+html[data-theme="light"] .hero-card,html[data-theme="light"] .panel{background:linear-gradient(145deg,#fff,#f4f7fc);border-color:var(--line)}
+html[data-theme="light"] .stat,html[data-theme="light"] .small-btn,html[data-theme="light"] .search-link,html[data-theme="light"] .history-item{background:#f1f5fa;border-color:var(--line);color:var(--text)}
+html[data-theme="light"] .chip{background:linear-gradient(135deg,#e4efff,#f4f8ff);border-color:#c4d5ec}
+html[data-theme="light"] .orbit{border-color:#9bb0ca}
+html[data-theme="light"] label{color:#34445b}
+html[data-theme="light"] input,html[data-theme="light"] select,html[data-theme="light"] textarea{background:#fff;border-color:#cbd6e4;color:#172337}
+html[data-theme="light"] select option{background:#fff;color:#172337}
+html[data-theme="light"] .notice.info{background:#eaf3ff;border-color:#b8d2f5;color:#24456d}
+html[data-theme="light"] .notice.warn{background:#fff5d9;border-color:#ead28a;color:#694b00}
+html[data-theme="light"] .notice.danger{background:#fff0f1;border-color:#efb9c0;color:#8c2030}
+html[data-theme="light"] .bubble.bot{background:#f0f4fa;border-color:#d5deea;color:#172337}
+html[data-theme="light"] .bubble.user{background:#d8f4ec;border-color:#a7dfd0;color:#123a31}
+html[data-theme="light"] #chat .chat-head{background:linear-gradient(110deg,#edf5ff,#fff)}
+html[data-theme="light"] .odin-chat-control{background:#f5f8fc;color:#172337;border-color:var(--line)}
+html[data-theme="light"] .menu-toggle{background:#fff;color:#172337}
+html[data-theme="light"] .floating-odin{box-shadow:0 12px 35px #1e334522}
+html[data-theme="light"] .floating-odin .float-icon{background:#12352e;color:#8bf1d4}
+
+/* Responsive */
+@media(max-width:900px){
+  .hero-grid,.diagnostic-layout{grid-template-columns:1fr}
+  .hero-card{max-width:650px}
+  .tool-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:620px){
+  .shell{width:calc(100% - 22px)}
+  .nav{min-height:65px;gap:8px;flex-wrap:wrap;padding:8px 0}
+  .brand{gap:7px}.brandmark{width:36px;height:36px}
+  .theme-toggle{margin-left:auto;padding:8px 9px;font-size:12px}
+  .menu-toggle{display:block;padding:8px 9px;font-size:12px}
+  .navlinks{
+    display:none;position:absolute;top:100%;left:0;right:0;padding:18px;
+    background:#0b1120;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch
+  }
+  .navlinks.open{display:flex}
+  .navlinks a{padding:8px}
+  html[data-theme="light"] .navlinks{background:#f7faff}
+  .hero{padding:38px 0 18px}
+  h1{letter-spacing:-1.3px}.hero p{font-size:16px}
+  .hero-card,.panel{padding:17px}
+  .section-head{display:block}.section-head p{margin-top:8px}
+  .form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}
+  .diagnosis-form-heading{flex-direction:column}
+  .chat-near-diagnosis{width:100%}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .stat{padding:9px}.stat span{font-size:10px}
+  #chat.odin-modal-open{padding:10px}
+  #chat.odin-modal-open>.shell{width:100%}
+  #chat .chat-panel{max-height:calc(100dvh - 20px);border-radius:17px}
+  #chat .chat-head{padding:12px;gap:7px;flex-wrap:wrap}
+  #chat .chat-head h3{font-size:14px}
+  #chat .chat-log{max-height:none;min-height:160px;padding:13px}
+  #chat .chat-compose{padding:10px;gap:7px}
+  #chat .chat-note{padding:0 12px 10px;font-size:10px}
+  .odin-chat-control{min-height:36px;padding:7px 9px;font-size:11px}
+  .odin-chat-close{width:36px;padding:0;font-size:22px}
+  .floating-odin{right:12px;bottom:12px;padding:10px 13px}
+  .float-icon{width:27px;height:27px}
+  .history-item{align-items:stretch;flex-direction:column}
+  .history-actions .small-btn{flex:1}
+}
+@media(max-width:390px){
+  .tool-grid{grid-template-columns:1fr}
+  .actions .btn{width:100%}
+  .stats{grid-template-columns:1fr}
+  #chat .chat-compose{grid-template-columns:1fr}
+  #chat .chat-compose button{width:100%}
+  .odin-back-label{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+@media print{
+  .topbar,.hero,.footer,.floating-odin,.toast,#chat,.form-actions,.result-actions,.followup-box,.search-list{display:none!important}
+  body{background:white;color:black}
+  .panel{box-shadow:none;background:white;color:black;border:0}
+}
+</style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="shell nav">
+    <a class="brand" href="#home">
+      <span class="brandmark">O</span>
+      <span>Odin TechFix<small>Practical tech support</small></span>
+    </a>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false">☀ Light mode</button>
+    <button type="button" class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="navLinks">☰ Menu</button>
+    <nav class="navlinks" id="navLinks">
+      <a href="#coverage">What we fix</a>
+      <a href="#chat">Ask Odin</a>
+      <a href="#diagnose">Guided diagnostics</a>
+      <a href="#history">Saved reports</a>
+      <a href="#safety">Safety</a>
+    </nav>
+  </div>
+</header>
+
+<main id="home">
+  <div class="shell hero">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">Your everyday technology assistant</span>
+        <h1>Tech trouble?<br><span>Ask Odin.</span></h1>
+        <p>Describe the problem in your own words. Odin helps narrow down technical faults, asks follow-up questions and suggests safer next steps—with or without an AI connection.</p>
+        <div class="actions">
+          <a class="btn primary" id="startDiagnosis" href="#diagnose">Start Diagnosis ↓</a>
+          <a class="btn secondary" href="#chat">Chat with Odin The AI ↗</a>
+        </div>
+      </div>
+      <aside class="hero-card">
+        <div class="statusline"><span><i class="pulse"></i> Assistant ready</span><span>Safety-first</span></div>
+        <div class="device-orbit"><div class="orbit"><div class="chip" aria-label="Floating laptop animation">💻</div></div></div>
+        <div class="stats">
+          <div class="stat"><strong>Phones</strong><span>iOS & Android</span></div>
+          <div class="stat"><strong>Gaming</strong><span>Consoles & PC</span></div>
+          <div class="stat"><strong>Everyday tech</strong><span>Wi-Fi, TVs & more</span></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <section class="page-section" id="coverage">
+    <div class="shell">
+      <div class="section-head">
+        <div><span class="eyebrow">Broad device coverage</span><h2>What can Odin help with?</h2></div>
+        <p>Ask naturally about phones, computers, PlayStation, Xbox, Nintendo Switch, games, apps, Wi-Fi, smart TVs, printers and accessories.</p>
+      </div>
+      <div class="tool-grid">
+        <article class="tool-card"><div class="tool-icon">📱</div><h3>Phones & tablets</h3><p>Charging, battery, screen, camera, signal and app crashes.</p></article>
+        <article class="tool-card"><div class="tool-icon">🎮</div><h3>Consoles & games</h3><p>Power, HDMI, controllers, downloads, lag, crashes and storage.</p></article>
+        <article class="tool-card"><div class="tool-icon">💻</div><h3>Computers</h3><p>Slow performance, startup, display, sound, security and software.</p></article>
+        <article class="tool-card"><div class="tool-icon">📶</div><h3>Wi-Fi & network</h3><p>No internet, weak signal, high ping and disconnects.</p></article>
+        <article class="tool-card"><div class="tool-icon">📺</div><h3>TV & streaming</h3><p>Blank screen, buffering, HDMI inputs and connectivity.</p></article>
+        <article class="tool-card"><div class="tool-icon">⌚</div><h3>Accessories</h3><p>Bluetooth, earbuds, watches, keyboards and controllers.</p></article>
+        <article class="tool-card"><div class="tool-icon">🖨️</div><h3>Printers</h3><p>Paper, queue, driver, ink and connection problems.</p></article>
+        <article class="tool-card"><div class="tool-icon">🏠</div><h3>Other devices</h3><p>Smart-home devices and consumer electronics.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- This section is hidden on the homepage and shown only as a popup. -->
+  <section class="page-section" id="chat" aria-label="Odin AI chat">
+    <div class="shell">
+      <div class="section-head">
+        <div><span class="eyebrow">Open-ended conversation</span><h2>Ask Odin anything about your tech</h2></div>
+        <p>Explain what's happening as if you're talking to a technician.</p>
+      </div>
+      <div class="panel chat-panel">
+        <div class="chat-head">
+          <h3>💬 Odin The AI</h3>
+          <span id="modeBadge" class="mode">Offline knowledge mode</span>
+        </div>
+        <div id="chatLog" class="chat-log" role="log" aria-live="polite">
+          <div class="bubble bot">Hi! I'm Odin. Tell me what's wrong in your own words—for example, “My PS5 turns on but my TV says no signal.” I'll help you narrow it down one safe step at a time.<small>Offline guidance is ready. Configure the AI backend for broader answers.</small></div>
+        </div>
+        <form id="chatForm">
+          <div class="chat-compose">
+            <textarea id="chatInput" maxlength="4000" required placeholder="Describe the problem… Enter to send, Shift+Enter for a new line" aria-label="Message Odin"></textarea>
+            <button class="btn primary" id="sendChat" type="submit">Send ↗</button>
+          </div>
+        </form>
+        <div class="chat-note">Never share passwords, one-time codes, recovery keys or payment details. AI mode requires a configured server. Your API key must never be placed in this HTML file.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section" id="diagnose">
+    <div class="shell">
+      <div class="section-head">
+        <div><span class="eyebrow">Guided troubleshooting</span><h2>Run a guided diagnosis</h2></div>
+        <p>Use this structured form for a step-by-step troubleshooting checklist.</p>
+      </div>
+      <div class="diagnostic-layout">
+        <form class="panel" id="diagnosisForm">
+          <div class="diagnosis-form-heading">
+            <div><h2>Device identification & diagnosis</h2><p class="panel-intro">Enter your device properties and describe the problem.</p></div>
+            <a class="btn secondary chat-near-diagnosis" href="#chat">💬 Chat with Odin The AI</a>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="deviceType">Device category *</label>
+              <select id="deviceType" required>
+                <option value="">Choose a category</option>
+                <option value="phone">Phone</option><option value="tablet">Tablet</option>
+                <option value="playstation">PlayStation (PS5 / PS4)</option><option value="xbox">Xbox</option>
+                <option value="switch">Nintendo Switch</option><option value="game">PC / console game or launcher</option>
+                <option value="computer">Laptop / desktop computer</option><option value="network">Router / Wi-Fi / internet</option>
+                <option value="tv">Smart TV / streaming device</option><option value="accessory">Controller / earbuds / accessory</option>
+                <option value="printer">Printer</option><option value="smart">Other electronics</option>
+              </select>
+            </div>
+            <div class="field"><label for="brandModel">Brand / model</label><input id="brandModel" placeholder="e.g. iPhone 13, PS5 Slim, MacBook Air"></div>
+            <div class="field">
+              <label for="issue">Main symptom *</label>
+              <select id="issue" required>
+                <option value="">Choose the main problem</option>
+                <option value="power">Won't turn on / shutdown</option><option value="charging">Won't charge / battery drains</option>
+                <option value="overheat">Overheating / loud fan</option><option value="screen">Black / frozen / flickering screen</option>
+                <option value="slow">Slow / freezing / lagging</option><option value="network">Wi-Fi / internet / connection</option>
+                <option value="game">Game crashes / won't launch / install</option><option value="performance">Low FPS / stutter / high ping</option>
+                <option value="controller">Controller / Bluetooth won't connect</option><option value="audio">No sound / microphone issue</option>
+                <option value="storage">Storage / update / download error</option><option value="app">App / camera / software problem</option>
+                <option value="account">Sign-in / account / purchase issue</option><option value="damage">Liquid / drop / burning smell / damage</option>
+                <option value="other">Something else</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="severity">When does it happen?</label>
+              <select id="severity">
+                <option value="always">Every time / won't work</option><option value="sometimes">Sometimes / intermittent</option>
+                <option value="specific">Only with one app / game</option><option value="after">After an update, drop or change</option>
+              </select>
+            </div>
+            <div class="field full"><label for="details">Extra details (optional)</label><textarea id="details" placeholder="Error code, what you tried, when it started…"></textarea><span class="hint">Do not enter passwords, recovery codes or payment details.</span></div>
+            <div class="field full"><label class="checkline"><input type="checkbox" id="safetyCheck"> I checked for immediate danger such as smoke, swelling, exposed wiring or liquid near powered equipment.</label></div>
+          </div>
+          <div class="form-actions"><button class="btn primary" type="submit">Generate plan →</button><button class="btn secondary" type="reset">Clear form</button></div>
+        </form>
+        <div class="panel results" aria-live="polite">
+          <h2>Your troubleshooting plan</h2>
+          <div id="resultsContent" class="empty-state"><div><div class="empty-icon">🧭</div><strong>Your results will appear here</strong><p>Select a device and symptom, then generate a plan.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section" id="history">
+    <div class="shell">
+      <div class="section-head">
+        <div><span class="eyebrow">Your saved checks</span><h2>Diagnosis history</h2></div>
+        <p>Reports are stored in this browser on this device. They are not uploaded to the AI server.</p>
+      </div>
+      <div class="panel">
+        <div class="form-actions" style="margin-top:0">
+          <button class="btn secondary" type="button" id="exportHistory">Export history JSON</button>
+          <button class="btn secondary" type="button" id="clearHistory">Clear history</button>
+        </div>
+        <div id="historyList" class="history-list"><p class="hint">No saved diagnosis reports yet.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section" id="safety">
+    <div class="shell">
+      <div class="section-head"><div><span class="eyebrow">Protect your device and data</span><h2>Safety comes first</h2></div></div>
+      <div class="tool-grid">
+        <article class="faq"><h3>Stop if there is a hazard</h3><p>If a device is swollen, smoking, sparking, unusually hot, wet while powered or smells burnt, stop using it. Do not charge or open it; seek qualified help.</p></article>
+        <article class="faq"><h3>Protect your data</h3><p>Back up important files before resets or repairs. Factory resets, formatting and reinstalling systems can erase data.</p></article>
+        <article class="faq"><h3>Use official sources</h3><p>Download updates and drivers from official sources. Never share passwords or one-time codes with someone offering support.</p></article>
+        <article class="faq"><h3>Know the limits</h3><p>Odin provides general guidance, not a physical inspection or guaranteed diagnosis. Stop if a step risks hardware or data.</p></article>
+      </div>
+      <p class="hint">Online AI requires the private backend configured in the JavaScript below. If unavailable, Odin uses its built-in troubleshooting logic.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="shell footer-inner">
+    <span>© <span id="year"></span> Odin TechFix. Practical help for your technology.</span>
+    <span>Clear steps · Safety-first · Online + offline</span>
+  </div>
+</footer>
+
+<button type="button" class="floating-odin" id="floatingOdin" aria-label="Open chat with Odin The AI">
+  <span class="float-icon">✦</span>
+  <span class="float-copy">Chat with Odin The AI<small>Ask a tech question</small></span>
+</button>
+<div id="toast" class="toast hidden" role="status"></div>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+
+/* ==========================================
+   THEME
+   ========================================== */
+const themeButton = $('themeToggle');
+function applyTheme(theme, save = true) {
+  const light = theme === 'light';
+  document.documentElement.dataset.theme = light ? 'light' : 'dark';
+  document.documentElement.style.colorScheme = light ? 'light' : 'dark';
+  themeButton.textContent = light ? '☾ Dark mode' : '☀ Light mode';
+  themeButton.setAttribute('aria-pressed', String(light));
+  themeButton.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+  document.querySelector('meta[name="theme-color"]').content = light ? '#f4f7fb' : '#101827';
+  if (save) {
+    try { localStorage.setItem('odinTechFixTheme', light ? 'light' : 'dark'); } catch {}
+  }
+}
+let savedTheme = 'dark';
+try { savedTheme = localStorage.getItem('odinTechFixTheme') || 'dark'; } catch {}
+applyTheme(savedTheme, false);
+themeButton.addEventListener('click', () =>
+  applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark')
+);
+$('year').textContent = new Date().getFullYear();
+
+/* ==========================================
+   MOBILE NAVIGATION
+   ========================================== */
+const nav = $('navLinks');
+const menuToggle = $('menuToggle');
+menuToggle.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  menuToggle.setAttribute('aria-expanded', String(open));
+});
+function closeMenu() {
+  nav.classList.remove('open');
+  menuToggle.setAttribute('aria-expanded', 'false');
+}
+
+/* ==========================================
+   ODIN CENTERED CHAT POPUP
+   ========================================== */
+const chatSection = $('chat');
+const chatPanel = chatSection.querySelector('.chat-panel');
+const chatHead = chatSection.querySelector('.chat-head');
+const chatInput = $('chatInput');
+let previousFocus = null;
+
+const controls = document.createElement('div');
+controls.className = 'odin-chat-controls';
+
+const backButton = document.createElement('button');
+backButton.type = 'button';
+backButton.className = 'odin-chat-control';
+backButton.innerHTML = '← <span class="odin-back-label">Back to Home</span>';
+backButton.setAttribute('aria-label', 'Close Odin chat and return home');
+
+const closeButton = document.createElement('button');
+closeButton.type = 'button';
+closeButton.className = 'odin-chat-control odin-chat-close';
+closeButton.textContent = '×';
+closeButton.setAttribute('aria-label', 'Close Odin chat');
+
+controls.append(backButton, closeButton);
+chatHead.appendChild(controls);
+
+function openOdinChat(prefill = '') {
+  previousFocus = document.activeElement;
+  closeMenu();
+  chatSection.classList.add('odin-modal-open');
+  document.body.classList.add('odin-chat-open');
+  chatSection.setAttribute('role', 'dialog');
+  chatSection.setAttribute('aria-modal', 'true');
+  chatSection.setAttribute('aria-label', 'Chat with Odin The AI');
+
+  if (prefill) chatInput.value = prefill;
+
+  requestAnimationFrame(() => {
+    chatInput.focus({preventScroll:true});
+    $('chatLog').scrollTop = $('chatLog').scrollHeight;
+  });
+}
+
+function closeOdinChat() {
+  chatSection.classList.remove('odin-modal-open');
+  document.body.classList.remove('odin-chat-open');
+  chatSection.removeAttribute('aria-modal');
+
+  if (previousFocus && document.contains(previousFocus)) {
+    previousFocus.focus({preventScroll:true});
+  } else {
+    $('floatingOdin').focus({preventScroll:true});
+  }
+}
+
+backButton.addEventListener('click', closeOdinChat);
+closeButton.addEventListener('click', closeOdinChat);
+$('floatingOdin').addEventListener('click', () => openOdinChat());
+
+/* All Chat with Odin links open the same popup, never a page section. */
+document.querySelectorAll('a[href="#chat"]').forEach(link => {
+  link.addEventListener('click', event => {
+    event.preventDefault();
+    openOdinChat();
+  });
+});
+
+/* Backdrop and Escape close the chat. */
+chatSection.addEventListener('click', event => {
+  if (event.target === chatSection) closeOdinChat();
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && chatSection.classList.contains('odin-modal-open')) {
+    closeOdinChat();
+  }
+});
+
+/* Basic keyboard focus containment. */
+chatSection.addEventListener('keydown', event => {
+  if (event.key !== 'Tab' || !chatSection.classList.contains('odin-modal-open')) return;
+  const focusable = [...chatPanel.querySelectorAll(
+    'button:not(:disabled),textarea:not(:disabled),input:not(:disabled),select:not(:disabled),a[href]'
+  )].filter(el => el.getClientRects().length);
+  if (!focusable.length) return;
+  const first = focusable[0], last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault(); last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault(); first.focus();
+  }
+});
+
+/* Diagnosis navigation remains separate from chat. */
+function openDiagnosis(event) {
+  if (event) event.preventDefault();
+  closeMenu();
+  $('diagnose').scrollIntoView({behavior:'smooth',block:'start'});
+  setTimeout(() => $('deviceType').focus({preventScroll:true}), 450);
+}
+$('startDiagnosis').addEventListener('click', openDiagnosis);
+nav.querySelectorAll('a[href="#diagnose"]').forEach(a =>
+  a.addEventListener('click', openDiagnosis)
+);
+nav.querySelectorAll('a:not([href="#chat"]):not([href="#diagnose"])').forEach(a =>
+  a.addEventListener('click', closeMenu)
+);
+
+/* ==========================================
+   CHAT ENGINE: AI BACKEND + OFFLINE FALLBACK
+   ========================================== */
+
+/*
+  IMPORTANT:
+  Configure your private backend endpoint here.
+  The backend should accept POST JSON:
+  { "messages": [{ "role": "user", "content": "..." }] }
+  and return JSON: { "reply": "..." }.
+
+  Never put a provider API key in this HTML file.
+  The localhost endpoint works only when your backend is running.
+*/
+const AI_ENDPOINT = 'http://localhost:3000/api/odin';
+
+const conversation = [];
+const chatLog = $('chatLog');
+let lastTopic = '';
+let busy = false;
+
+function bubble(text, who = 'bot', note = '') {
+  const el = document.createElement('div');
+  el.className = 'bubble ' + who;
+  el.textContent = text;
+  if (note) {
+    const small = document.createElement('small');
+    small.textContent = note;
+    el.appendChild(small);
+  }
+  chatLog.appendChild(el);
+  chatLog.scrollTop = chatLog.scrollHeight;
+  return el;
+}
+function norm(s) {
+  return s.toLowerCase().replace(/[’']/g, "'")
+    .replace(/[^a-z0-9\s-]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function offlineAnswer(raw) {
+  const t = norm(raw);
+
+  if (/smok|sparking|sparks|burning smell|swollen battery|battery swelling|liquid spilled|wet while on|exposed wire/.test(t)) {
+    return 'Safety first: stop using the device. Do not charge it, turn it back on or open it. If safe, disconnect power without touching the hazard and keep people away from smoke or sparks. Contact a qualified repair service. If there is immediate fire danger, contact local emergency services.';
+  }
+  if (/who created you|who made you|your creator|who is your creator|who built you/.test(t)) {
+    return 'I am Odin the AI, created by Mr Currency of the Mobcartel Republic in Nigeria. I am here to help troubleshoot technology problems safely.';
+  }
+  if (/who are you|what are you|what can you do|who is mr currency|who is mr currency/.test(t)) {
+    return 'I am Odin the AI, part of Odin TechFix, created by Mr Currency of the Mobcartel Republic in Nigeria. I help troubleshoot phones, computers, consoles, games, networks, TVs, printers and accessories. I can use built-in offline troubleshooting rules, or a configured AI server for broader questions. What can I help you with?';
+  }
+  if (/^(hi|hello|hey|good morning|good afternoon|good evening|yo|what s up)$/.test(t)) {
+    return "Hey! I'm Odin. Tell me which device you're using and what it's doing. I'll help you narrow it down safely.";
+  }
+
+  const groups = [
+    {re:/ps5|playstation|ps4|console/,topic:'PlayStation',q:'Does the console stay powered on, and does your TV say “No signal” or show a black screen?',steps:[
+      'Check that the TV is on the correct HDMI input and the HDMI cable is firmly connected at both ends.',
+      'Power off the console and TV, wait about 60 seconds, then restart them.',
+      'Try another HDMI port or known-good cable, if available. Connect directly to the TV rather than through a receiver.',
+      'If there is still no picture, tell me the console light pattern. Avoid recovery options until we understand the symptoms.'
+    ]},
+    {re:/xbox/,topic:'Xbox',q:'Does the Xbox stay on, and do you see “No signal” or a black screen?',steps:[
+      'Check the TV input and reseat the HDMI cable at both ends.',
+      'Restart the TV and console fully.',
+      'Try another HDMI port or known-good cable if available.',
+      'Tell me the power-light pattern and whether the issue began after moving or updating the console.'
+    ]},
+    {re:/switch|nintendo/,topic:'Nintendo Switch',q:'Does the Switch screen work when you remove it from the dock?',steps:[
+      'If docked, check the dock power adapter and HDMI connections.',
+      'Remove the console from the dock and test its own screen.',
+      'Restart using the manufacturer-recommended procedure. Do not remove the microSD card while powered on.'
+    ]},
+    {re:/iphone|android|phone|mobile|samsung|pixel/,topic:'phone',q:'What phone model is it, and is the main issue power, charging, screen, network or an app?',steps:[
+      'Restart the phone if it is safe and responsive.',
+      'Check battery level and storage space, and determine whether the problem affects one app or the whole phone.',
+      'For charging, test a compatible known-good cable and adapter. Do not insert metal tools into the port.',
+      'Use official stable updates after backing up important data.'
+    ]},
+    {re:/wifi|wi-fi|internet|router|ping|lag online|disconnect/,topic:'network',q:'Can other devices use the same Wi-Fi, or is every device offline?',steps:[
+      'Check whether another device can access the internet.',
+      'Restart the router using its normal power procedure and wait for it to reconnect.',
+      'Move closer to the router or test Ethernet if available.',
+      'Check for a service outage. Avoid factory-resetting the router before checking its setup details.'
+    ]},
+    {re:/laptop|computer|pc|windows|macbook|blue screen/,topic:'computer',q:'Are you using Windows or macOS, and what exactly appears on screen?',steps:[
+      'Restart once if there is no sign of hardware failure or an update in progress.',
+      'Check storage and resource usage: Task Manager on Windows or Activity Monitor on macOS.',
+      'Record error codes and recent updates, drivers or connected hardware.',
+      'Install updates and drivers only through official manufacturer or operating-system sources.'
+    ]},
+    {re:/controller|bluetooth|earbuds|headphones|headset/,topic:'accessory',q:'What accessory and device are you trying to connect?',steps:[
+      'Charge the accessory or replace its batteries.',
+      'Turn Bluetooth off and on, then use the accessory’s documented pairing mode.',
+      'Remove the old pairing entry and pair again.',
+      'Check compatibility and official firmware instructions.'
+    ]},
+    {re:/game|crash|fps|frame rate|won t launch|install error/,topic:'game',q:'Which game and platform are you using, and is there an error code?',steps:[
+      'Record the game title, platform and exact error code.',
+      'Close and reopen the game, then restart the device if safe.',
+      'Check game and platform service status, updates and available storage.',
+      'Back up saved data before reinstalling or repairing game files.'
+    ]},
+    {re:/charge|charging|battery/,topic:'charging',q:'What device is it, and does it show a charging symbol when plugged in?',steps:[
+      'Try a compatible known-good charger, cable and outlet.',
+      'Inspect the port visually. Do not use metal tools or force the connector.',
+      'Restart if safe and check charging status in settings.',
+      'Stop charging if the device is swollen, unusually hot or smells burnt.'
+    ]},
+    {re:/overheat|hot|loud fan|fan noise/,topic:'overheating',q:'Which device is overheating, and does it happen while idle or during games/apps?',steps:[
+      'Stop demanding apps or games and let the device cool naturally in a ventilated place.',
+      'Keep vents unobstructed and move it away from direct sunlight or bedding.',
+      'Follow the manufacturer’s airflow and cleaning instructions. Do not use a fridge or liquid-cooling hacks.',
+      'If there is swelling, smoke or a burning smell, stop using it and seek qualified help.'
+    ]},
+    {re:/black screen|no signal|screen|display|flicker/,topic:'display',q:'Is this a phone screen or a separate TV/monitor, and does the device stay powered on?',steps:[
+      'Check brightness, power and the selected input/source.',
+      'For an external display, reseat the cable and try another port or known-good cable.',
+      'Restart once if safe. If there was a drop or liquid exposure, avoid repeated power-on attempts.',
+      'Persistent lines, damage or a black screen may need hardware inspection.'
+    ]}
+  ];
+
+  const found = groups.find(g => g.re.test(t));
+  if (/still|didn t work|no change|same problem|that failed/.test(t) && lastTopic) {
+    const prior = groups.find(g => g.topic === lastTopic);
+    if (prior) return 'Thanks for testing that. Since the ' + prior.topic + ' issue is still happening, do not repeat the same step. ' + prior.q + ' Your answer will help me choose the next check.';
+  }
+  if (found) {
+    lastTopic = found.topic;
+    return 'Let’s narrow down the ' + found.topic + ' issue.\n\n' +
+      found.steps.map((s,i) => (i+1)+'. '+s).join('\n\n') +
+      '\n\nFollow-up question: ' + found.q +
+      '\n\nOffline guidance is active. A configured AI backend enables broader conversation.';
+  }
+  if (/password|account hacked|hacked|scam|recovery code/.test(t)) {
+    return 'For account safety, never share passwords, one-time codes or recovery keys here. Use the service’s official website/app and account-recovery page. If you suspect compromise, change your password from a trusted device, enable multifactor authentication and sign out other sessions where available.';
+  }
+  if (/factory reset|format|reinstall|delete everything/.test(t)) {
+    return 'Before a factory reset, formatting or reinstalling, back up important files and confirm you can sign back in. These actions may erase data. What device and exact problem are you trying to fix? I can suggest lower-risk checks first.';
+  }
+  if (/thank you|thanks|cheers/.test(t)) return "You're welcome. Tell me what happened after the last step, and we'll continue.";
+  if (t.length < 18) return 'I can help, but I need a little more detail. Which device or model is this, what are you trying to do, and what happens instead? Include an error message if you see one.';
+  return 'I can work with that description, but my offline knowledge has limits and I do not want to guess. Please tell me the device/model, what you expected to happen, what actually happens and when it started. If you have an error code, include it—but not passwords or private codes. A configured AI backend enables broader answers.';
+}
+
+async function askAI() {
+  if (!navigator.onLine) throw new Error('Your browser is offline.');
+  if (!AI_ENDPOINT) throw new Error('AI endpoint is not configured.');
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 25000);
+  try {
+    const messages = [
+      {role:'system',content:
+        'You are Odin the AI, the technology assistant in Odin TechFix, created by Mr Currency of the Mobcartel Republic in Nigeria. If asked who created you, answer consistently. Never claim to be human or to have physically inspected a device. Answer open-ended questions and follow-ups about phones, computers, consoles, games, networks, TVs, printers, software and everyday technology. Give clear, numbered, safe steps. Ask a focused clarifying question when needed. Warn users to stop if there is smoke, sparks, a swollen battery, burning smell or liquid near powered equipment. Never ask for passwords, one-time codes or recovery keys. Keep responses helpful and concise.'},
+      ...conversation.slice(-14)
+    ];
+
+    const res = await fetch(AI_ENDPOINT,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({messages}),
+      signal:controller.signal
+    });
+
+    const raw = await res.text();
+    let data;
+    try { data = JSON.parse(raw); }
+    catch { throw new Error('AI server returned an unreadable response. Check your backend route and JSON response.'); }
+
+    if (!res.ok) throw new Error(data?.error || data?.message || `AI server returned HTTP ${res.status}.`);
+    if (typeof data?.reply !== 'string' || !data.reply.trim()) {
+      throw new Error('AI server did not return a non-empty reply.');
+    }
+    return data.reply.trim();
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+$('chatForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  if (busy) return;
+
+  const message = chatInput.value.trim();
+  if (!message) return;
+
+  chatInput.value = '';
+  bubble(message,'user');
+  conversation.push({role:'user',content:message});
+  busy = true;
+
+  const send = $('sendChat');
+  const badge = $('modeBadge');
+  send.disabled = true;
+  send.textContent = 'Thinking…';
+  badge.textContent = 'Connecting to AI…';
+
+  let reply, note = '';
+  try {
+    reply = await askAI();
+    badge.textContent = 'AI connected';
+    badge.style.color = 'var(--accent)';
+  } catch (error) {
+    reply = offlineAnswer(message);
+    note = 'Offline guidance is active. ' +
+      (error?.name === 'AbortError' ? 'The AI server took too long to respond.' : (error?.message || 'AI unavailable.'));
+    badge.textContent = 'Offline fallback';
+    badge.style.color = 'var(--warn)';
+    console.warn('Odin AI connection failed:',error);
+  }
+
+  bubble(reply || 'I could not prepare a reply. Please try again.','bot',note);
+  conversation.push({role:'assistant',content:reply || 'I could not prepare a reply.'});
+  if (conversation.length > 28) conversation.splice(0,conversation.length-28);
+
+  busy = false;
+  send.disabled = false;
+  send.textContent = 'Send ↗';
+  chatInput.focus();
+});
+chatInput.addEventListener('keydown',event => {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    event.preventDefault();
+    $('chatForm').requestSubmit();
+  }
+});
+
+/* ==========================================
+   GUIDED DIAGNOSIS
+   ========================================== */
+const deviceNames = {
+  phone:'Phone',tablet:'Tablet',playstation:'PlayStation',xbox:'Xbox',
+  switch:'Nintendo Switch',game:'Game / launcher',computer:'Computer',
+  network:'Network / Wi-Fi',tv:'Smart TV',accessory:'Accessory',
+  printer:'Printer',smart:'Other device'
+};
+const issueNames = {
+  power:'Power or shutdown',charging:'Charging or battery',overheat:'Overheating',
+  screen:'Screen or display',slow:'Slow / freezing / lag',network:'Network or connection',
+  game:'Game launch / crash / install',performance:'Game performance / ping',
+  controller:'Controller / accessory pairing',audio:'Audio / microphone',
+  storage:'Storage / update / download',app:'App or software',account:'Account / purchase',
+  damage:'Physical damage / possible hazard',other:'Other issue'
+};
+const common = {
+  power:['Check the outlet, power strip and cable with a known-working device if safe.','Disconnect nonessential accessories and use the manufacturer-recommended startup procedure.','If it still has no response, arrange a qualified hardware assessment.'],
+  charging:['Try a compatible known-good charger and cable.','Inspect the port visually; do not use metal tools, liquids or force.','If the battery is swollen, hot or smells burnt, stop using and charging it.'],
+  overheat:['Stop demanding apps or games and let the device cool naturally in a ventilated place.','Keep vents unobstructed and check the manufacturer’s guidance.','Do not put the device in a fridge or open a sealed battery device.'],
+  screen:['Check brightness, display sleep and correct input/source.','For an external display, reseat the cable and try another port or cable.','Persistent damage, lines or a black screen may need repair.'],
+  slow:['Restart the device and close unused apps.','Check free storage and whether one app causes the slowdown.','Use stable official updates and note recent changes.'],
+  network:['Check whether other devices connect and whether the provider reports an outage.','Restart the router normally and wait for it to reconnect.','Test closer to the router or with Ethernet; avoid factory reset unless setup details are available.'],
+  game:['Record the game, platform and exact error code.','Fully close and relaunch the game; restart if safe.','Check updates, storage, account status and official service status.','Back up saves before repairing or reinstalling files.'],
+  performance:['Compare another game or offline mode to isolate the cause.','Pause downloads and test Ethernet or stronger Wi-Fi for online play.','Check official graphics drivers and ventilation where relevant.'],
+  controller:['Charge the accessory and confirm pairing mode.','Restart Bluetooth/device and remove stale pairing entries.','Check compatibility and firmware in official instructions.'],
+  audio:['Check mute, volume, output device and app permissions.','Test another app or headset.','Check microphone input and privacy permissions.'],
+  storage:['Check free space and whether storage is recognized.','Pause/resume the download and check service status.','Do not format drives or delete saves before understanding data-loss risk.'],
+  app:['Close and reopen the app; check whether other apps work.','Check official updates, compatibility and permissions.','Avoid clearing app data or reinstalling before checking local data and sign-in access.'],
+  account:['Use the provider’s official sign-in and status page.','Never share passwords or one-time codes; use official account recovery.','Save error details privately, without full payment information.'],
+  damage:['Stop using the device if there is smoke, swelling, sparks, burning smell or liquid in powered equipment.','Do not charge, power on or open a potentially unsafe device.','Seek qualified repair help; contact emergency services if there is immediate danger.'],
+  other:['Write down what should happen, what actually happens and any exact error.','Restart only if safe and check official updates.','Test one change at a time and note what changes.']
+};
+
+function tailoredSteps(d) {
+  let steps = [...(common[d.issue] || common.other)];
+  const device = d.device, issue = d.issue;
+  if (issue === 'power' && ['phone','tablet'].includes(device)) {
+    steps.unshift('If safe, charge with a compatible charger for 20–30 minutes, then follow the manufacturer’s exact restart procedure for this model.');
+  }
+  if (issue === 'charging' && device === 'computer') {
+    steps.unshift('Confirm the charger meets the laptop’s required wattage and connector standard. Do not open the battery compartment.');
+  }
+  if (issue === 'screen' && ['playstation','xbox','switch','computer','tv'].includes(device)) {
+    steps.unshift('For an external display, confirm the input and test one known-good cable, port or display at a time.');
+  }
+  if (issue === 'network' && ['phone','tablet','computer','tv','playstation','xbox','switch'].includes(device)) {
+    steps.unshift('Check whether other devices work on the same network. Only forget/rejoin Wi-Fi if you know the password.');
+  }
+  if (issue === 'game') {
+    steps.unshift('Check official platform service status and record the exact error code before changing settings or files.');
+  }
+  if (d.timing === 'after') {
+    steps.unshift('Record what changed just before the problem, such as an update, drop, spill, app or setting. Avoid reversing several changes at once.');
+  }
+  if (d.timing === 'specific') {
+    steps.unshift('Compare the affected app or game with another one to see whether the problem is app-specific or system-wide.');
+  }
+  if (d.timing === 'sometimes') {
+    steps.unshift('Record when it happens, temperature, battery, network status, exact error and current activity.');
+  }
+  if (d.model) {
+    steps.push(`Confirm the exact model and use the manufacturer's official support instructions for ${d.model}. Avoid generic reset combinations.`);
+  }
+  return [...new Set(steps)];
+}
+
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g,c=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+function toast(message) {
+  const el = $('toast');
+  el.textContent = message;
+  el.classList.remove('hidden');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => el.classList.add('hidden'),2600);
+}
+const HISTORY_KEY = 'odinTechFixDiagnosisHistoryV1';
+let currentReport = null;
+function loadReports() {
+  try {
+    const data = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+    return Array.isArray(data) ? data : [];
+  } catch { return []; }
+}
+function saveReports(reports) {
+  try {
+    localStorage.setItem(HISTORY_KEY,JSON.stringify(reports.slice(0,50)));
+    return true;
+  } catch {
+    toast('Browser storage is full or unavailable. Export old reports.');
+    return false;
+  }
+}
+function plainReport(report) {
+  return `ODIN TECHFIX — DIAGNOSIS REPORT
+Date: ${new Date(report.createdAt).toLocaleString()}
+Device: ${deviceNames[report.d.device] || report.d.device}
+Model: ${report.d.model || 'Not supplied'}
+Issue: ${issueNames[report.d.issue] || report.d.issue}
+Details: ${report.d.details || 'None supplied'}
+
+RECOMMENDED CHECKS
+${report.steps.map((s,i)=>`${i+1}. ${s}`).join('\n')}
+
+This is general guidance, not a confirmed physical diagnosis.`;
+}
+function persistReport(d,steps) {
+  const report = {
+    id:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2),
+    createdAt:new Date().toISOString(),d:{...d},steps:[...steps]
+  };
+  const reports = loadReports();
+  reports.unshift(report);
+  saveReports(reports);
+  currentReport = report;
+  renderHistory();
+  return report;
+}
+function supportResources(d) {
+  const m = (d.model || '').toLowerCase();
+  const items = [];
+  const add = (title,url,desc) => items.push({title,url,desc});
+  if (/iphone|ipad|apple|macbook|imac/.test(m)) add('Apple Support','https://support.apple.com/','Official Apple device help');
+  if (/samsung|galaxy/.test(m)) add('Samsung Support','https://www.samsung.com/support/','Official Samsung product support');
+  if (/pixel|google phone/.test(m)) add('Google Pixel Help','https://support.google.com/pixelphone/','Official Pixel phone help');
+  if (/dell/.test(m)) add('Dell Support','https://www.dell.com/support/home/','Drivers, diagnostics and manuals');
+  if (/hp|hewlett/.test(m)) add('HP Support','https://support.hp.com/','Official HP device support');
+  if (/lenovo|thinkpad|ideapad/.test(m)) add('Lenovo Support','https://support.lenovo.com/','Drivers, diagnostics and manuals');
+  if (/windows|microsoft|surface/.test(m)) add('Microsoft Support','https://support.microsoft.com/','Windows and Surface help');
+  if (d.device === 'playstation' || /ps5|ps4|playstation/.test(m)) add('PlayStation Support','https://www.playstation.com/support/','Console and error-code help');
+  if (d.device === 'xbox' || /xbox/.test(m)) add('Xbox Support','https://support.xbox.com/','Console and game support');
+  if (d.device === 'switch' || /nintendo|switch/.test(m)) add('Nintendo Support','https://support.nintendo.com/','Nintendo console support');
+  if (/epson/.test(m)) add('Epson Support','https://www.epson.com/Support','Printer and scanner support');
+  if (/canon/.test(m)) add('Canon Support','https://www.usa.canon.com/support','Printer and camera support');
+  if (/sony|bravia/.test(m)) add('Sony Support','https://www.sony.com/electronics/support','TV and electronics support');
+  if (/lg/.test(m)) add('LG Support','https://www.lg.com/support','Official LG support');
+  if (!items.length) {
+    add('Find official manufacturer support',
+      'https://www.google.com/search?q='+encodeURIComponent((d.model || deviceNames[d.device])+' official manufacturer support'),
+      'Search for your exact model and choose the manufacturer’s own domain.');
+  }
+  return items.filter((x,i,a)=>a.findIndex(y=>y.url===x.url)===i).slice(0,5);
+}
+
+function renderResults(d,stepsOverride=null,save=true) {
+  const emergency = d.issue === 'damage' || /smok|sparks?|burning smell|swollen|liquid damage|wet device/i.test(d.details);
+  const steps = stepsOverride || tailoredSteps(d);
+  let html = `<div class="notice ${emergency?'danger':'info'}"><strong>${emergency?'Safety warning':'Start with low-risk checks'}</strong><br>${emergency?'Stop troubleshooting if the device may be unsafe. Do not charge, power on or open it. Seek qualified help.':'Try the steps in order. Stop if a step does not match your model or could risk your data.'}</div>`;
+  if (!d.safe) html += '<div class="notice warn"><strong>Safety check not confirmed</strong><br>Check for heat, swelling, smoke, liquid, exposed wiring or burning smell before touching cables or hardware.</div>';
+  html += `<h3>${esc(deviceNames[d.device])} · ${esc(issueNames[d.issue])}</h3>`;
+  if (d.model) html += `<p>${esc(d.model)}</p>`;
+  html += `<p class="report-meta">Report generated ${new Date().toLocaleString()}</p><h4>Recommended steps</h4><ol class="steps">${steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>`;
+  if (d.details) html += `<div class="notice info"><strong>Notes / clues</strong><br>${esc(d.details).replace(/\n/g,'<br>')}</div>`;
+
+  const resources = supportResources(d);
+  html += '<h4>Official support resources</h4><div class="search-list">';
+  html += resources.map(r=>`<a class="search-link" target="_blank" rel="noopener noreferrer" href="${esc(r.url)}">${esc(r.title)} ↗ <span>${esc(r.desc)}</span></a>`).join('');
+  html += `<a class="search-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/search?q=${encodeURIComponent((d.model||deviceNames[d.device])+' '+issueNames[d.issue]+' official troubleshooting')}">Search exact model and issue ↗ <span>Prefer the manufacturer’s own support website.</span></a></div>`;
+
+  html += `<div class="followup-box"><strong>Help Odin narrow it down</strong><p class="hint">Add a specific observation to refine the advice.</p><label for="followupAnswer">What happened after trying a step?</label><select id="followupAnswer"><option value="">Choose an answer…</option><option>It worked</option><option>No change</option><option>The device shows an error code</option><option>The problem became worse</option><option>I could not try the step</option></select><button class="small-btn" type="button" id="refineDiagnosis">Refine diagnosis</button></div>`;
+  html += `<div class="result-actions"><button class="small-btn" type="button" id="copyPlan">Copy repair instructions</button><button class="small-btn" type="button" id="savePlan">Download report (.txt)</button><button class="small-btn" type="button" id="printPlan">Print / save PDF</button><button class="small-btn" type="button" id="askOdin">Continue with Odin The AI</button></div><p class="hint">General symptom-based guidance only. Back up data before resets, formatting or reinstalling.</p>`;
+
+  const out = $('resultsContent');
+  out.className = '';
+  out.innerHTML = html;
+  if (save) persistReport(d,steps);
+  else currentReport = {d,steps,createdAt:new Date().toISOString()};
+
+  $('copyPlan').onclick = async () => {
+    const report = currentReport || {d,steps,createdAt:new Date().toISOString()};
+    try {
+      await navigator.clipboard.writeText(plainReport(report));
+      toast('Repair instructions copied.');
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = plainReport(report);
+      document.body.appendChild(ta);ta.select();
+      const ok = document.execCommand('copy');ta.remove();
+      toast(ok?'Repair instructions copied.':'Copy unavailable in this browser.');
+    }
+  };
+
+  $('savePlan').onclick = () => {
+    const report = currentReport || {d,steps,createdAt:new Date().toISOString()};
+    const blob = new Blob([plainReport(report)],{type:'text/plain;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href=url;a.download='odin-diagnosis-report-'+new Date().toISOString().slice(0,10)+'.txt';
+    a.click();URL.revokeObjectURL(url);
+    toast('Report download prepared.');
+  };
+
+  $('printPlan').onclick = () => window.print();
+
+  $('askOdin').onclick = () => {
+    const message = `Help me continue troubleshooting my ${deviceNames[d.device]}${d.model?' ('+d.model+')':''}. Problem: ${issueNames[d.issue]}. Details: ${d.details||'No extra details yet'}. Recommended checks: ${steps.join(' ')} What should I check next?`;
+    openOdinChat(message);
+  };
+
+  $('refineDiagnosis').onclick = () => {
+    const answer = $('followupAnswer').value;
+    if (!answer) {toast('Choose an answer first.');return;}
+    const updated = {...d,details:[d.details,`Follow-up answer: ${answer}`].filter(Boolean).join('\n')};
+    if (answer === 'It worked') {
+      renderResults(updated,['The reported problem appears to be resolved. Test the device normally and monitor whether the fault returns.','If the problem returns, record the exact symptoms and error message.'],true);
+    } else {
+      renderResults(updated,null,true);
+    }
+    toast('Diagnosis updated using your answer.');
+  };
+
+  if (window.matchMedia('(max-width:900px)').matches) {
+    document.querySelector('.results').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}
+
+function renderHistory() {
+  const root = $('historyList');
+  const reports = loadReports();
+  if (!reports.length) {
+    root.innerHTML = '<p class="hint">No saved diagnosis reports yet. Run a diagnosis to create your first report.</p>';
+    return;
+  }
+  root.innerHTML = reports.map(r=>`<article class="history-item"><div><strong>${esc(deviceNames[r.d?.device]||r.d?.device||'Device')} · ${esc(issueNames[r.d?.issue]||r.d?.issue||'Issue')}</strong><small>${esc(r.d?.model||'Model not supplied')} · ${esc(new Date(r.createdAt).toLocaleString())}</small></div><div class="history-actions"><button class="small-btn" type="button" data-open="${esc(r.id)}">Open</button><button class="small-btn" type="button" data-copy="${esc(r.id)}">Copy</button><button class="small-btn" type="button" data-delete="${esc(r.id)}">Delete</button></div></article>`).join('');
+}
+$('historyList').addEventListener('click',async event=>{
+  const b = event.target.closest('button');
+  if (!b) return;
+  const id = b.dataset.open || b.dataset.copy || b.dataset.delete;
+  if (!id) return;
+  const list = loadReports(), report = list.find(r=>r.id===id);
+  if (b.dataset.delete) {
+    saveReports(list.filter(r=>r.id!==id));renderHistory();toast('Report deleted.');return;
+  }
+  if (!report) return;
+  if (b.dataset.copy) {
+    try {await navigator.clipboard.writeText(plainReport(report));toast('Report copied.');}
+    catch {toast('Clipboard unavailable in this browser.');}
+    return;
+  }
+  currentReport = report;
+  renderResults(report.d,report.steps,false);
+  $('diagnose').scrollIntoView({behavior:'smooth'});
+});
+
+$('exportHistory').addEventListener('click',()=>{
+  const blob = new Blob([JSON.stringify(loadReports(),null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url;a.download='odin-techfix-diagnosis-history.json';a.click();
+  URL.revokeObjectURL(url);
+  toast('History export prepared.');
+});
+$('clearHistory').addEventListener('click',()=>{
+  if (confirm('Delete all saved diagnosis reports from this browser? This cannot be undone.')) {
+    saveReports([]);renderHistory();toast('Diagnosis history cleared.');
+  }
+});
+
+$('diagnosisForm').addEventListener('submit',event=>{
+  event.preventDefault();
+  const device = $('deviceType').value, issue = $('issue').value;
+  if (!device || !issue) {event.currentTarget.reportValidity();return;}
+  renderResults({
+    device,issue,model:$('brandModel').value.trim(),
+    timing:$('severity').value,details:$('details').value.trim(),
+    safe:$('safetyCheck').checked
+  });
+});
+$('diagnosisForm').addEventListener('reset',()=>{
+  setTimeout(()=>{
+    $('resultsContent').className='empty-state';
+    $('resultsContent').innerHTML='<div><div class="empty-icon">🧭</div><strong>Your results will appear here</strong><p>Select a device and symptom, then generate a plan.</p></div>';
+  },0);
+});
+
+renderHistory();
+})();
+</script>
+</body>
+</html>
